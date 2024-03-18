@@ -13,8 +13,8 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
         @PropertySource(value = "classpath:application-local.yml", factory = YamlPropertySourceFactory.class, ignoreResourceNotFound = true)
 })
 public class PropertiesConfig {
-    @Bean
-    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
-        return new PropertySourcesPlaceholderConfigurer();
-    }
+//    @Bean
+//    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+//        return new PropertySourcesPlaceholderConfigurer();
+//    }
 }
