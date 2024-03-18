@@ -3,4 +3,5 @@ server:
     context-path: /hsr-service
 hsr:
   db:
-    pwfile: /opt/hsr/dbpw
+    pw:
+      file: /opt/hsr/dbpw

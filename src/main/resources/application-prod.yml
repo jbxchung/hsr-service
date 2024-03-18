@@ -1,4 +1,4 @@
 hsr:
   db:
-    url: rpi01
+    url: jdbc:mysql://rpi01/hsr
     username: jbxchung_prod
