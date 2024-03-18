@@ -1,0 +1,6 @@
+server:
+  servlet:
+    context-path: /hsr-service
+hsr:
+  db:
+    pwfile: /opt/hsr/dbpw

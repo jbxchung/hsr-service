@@ -1,0 +1,4 @@
+hsr:
+  db:
+    url: rpi02
+    username: jbxchung_uat

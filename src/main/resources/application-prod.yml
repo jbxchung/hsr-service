@@ -1,0 +1,4 @@
+hsr:
+  db:
+    url: rpi01
+    username: jbxchung_prod
