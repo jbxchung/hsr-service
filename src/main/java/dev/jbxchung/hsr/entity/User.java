@@ -39,7 +39,7 @@ public class User implements Serializable {
     private String email;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "name", length = 20)
+    @Column(name = "user_role", length = 20)
     private Role role;
 
     @Column(name = "password_enc")
@@ -47,7 +47,7 @@ public class User implements Serializable {
     private String encryptedPassword;
 
     public enum Role {
-        ROLE_ADMIN,
-        ROLE_USER
+        ADMIN,
+        USER
     }
 }
