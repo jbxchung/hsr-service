@@ -2,6 +2,7 @@ package dev.jbxchung.hsr.service;
 
 import dev.jbxchung.hsr.entity.User;
 import dev.jbxchung.hsr.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private UserRepository userRepository;
 
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String accountName) throws UsernameNotFoundException {
         User user = userRepository.findByAccountName(accountName)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with account name " + accountName));
