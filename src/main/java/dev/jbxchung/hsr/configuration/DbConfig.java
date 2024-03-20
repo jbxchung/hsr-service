@@ -30,7 +30,7 @@ public class DbConfig {
     @Value("${hsr.db.pw.override:}")
     private String dbPass;
 
-    @Bean
+    @Bean()
     public DataSource getDataSource() {
         DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
 

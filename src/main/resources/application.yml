@@ -5,3 +5,8 @@ hsr:
   db:
     pw:
       file: /opt/hsr/dbpw
+  auth:
+    jwt:
+      expiration: 86400000
+      secret:
+        file: /opt/hsr/jwtsecret
