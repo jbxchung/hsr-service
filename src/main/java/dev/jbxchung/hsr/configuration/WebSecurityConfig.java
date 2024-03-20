@@ -1,5 +1,7 @@
 package dev.jbxchung.hsr.configuration;
 
+import dev.jbxchung.hsr.security.AuthEntryPointJwt;
+import dev.jbxchung.hsr.security.AuthTokenFilter;
 import dev.jbxchung.hsr.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

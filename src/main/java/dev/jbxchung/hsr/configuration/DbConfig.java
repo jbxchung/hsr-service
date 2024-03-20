@@ -37,6 +37,7 @@ public class DbConfig {
         dataSourceBuilder.url(dbUrl);
         dataSourceBuilder.username(dbUser);
 
+        // local should override db pw, otherwise get from file
         if (!HostUtils.isLocalhost()) {
             try {
                 dbPass = Files.readString(Paths.get(dbPwFile));

@@ -38,12 +38,16 @@ public class User implements Serializable {
     @JsonProperty("email")
     private String email;
 
-    @OneToMany
-    @JoinTable(name = "user_roles",
-        joinColumns = @JoinColumn(name = "user_id"))
-    private UserRole.Role role;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "name", length = 20)
+    private Role role;
 
     @Column(name = "password_enc")
     @JsonIgnore
     private String encryptedPassword;
+
+    public enum Role {
+        ROLE_ADMIN,
+        ROLE_USER
+    }
 }
