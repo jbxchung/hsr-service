@@ -1,5 +1,6 @@
 package dev.jbxchung.hsr.controller;
 
+import dev.jbxchung.hsr.dto.ApiResponse;
 import dev.jbxchung.hsr.dto.JwtResponse;
 import dev.jbxchung.hsr.dto.LoginRequest;
 import dev.jbxchung.hsr.entity.User;
@@ -36,7 +37,6 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
@@ -47,11 +47,14 @@ public class AuthController {
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority).toList();
 
-        return ResponseEntity.ok(new JwtResponse(jwt,
+        JwtResponse jwtResponse = new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
-                roles.get(0)));
+                roles.get(0)
+        );
+
+        return ResponseEntity.ok(new ApiResponse<>(true, jwtResponse));
     }
 
 }

@@ -13,6 +13,6 @@ public class UserController {
     @GetMapping("/info")
     public ResponseEntity getAccountInfo(HttpServletRequest request) {
         // TODO - implement this
-        return null;
+        return ResponseEntity.ok("ok");
     }
 }

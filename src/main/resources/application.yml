@@ -1,6 +1,6 @@
 server:
   servlet:
-    context-path: /hsr-service
+    context-path: /api
 hsr:
   db:
     pw:
