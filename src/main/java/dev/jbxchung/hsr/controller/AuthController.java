@@ -3,14 +3,10 @@ package dev.jbxchung.hsr.controller;
 import dev.jbxchung.hsr.dto.ApiResponse;
 import dev.jbxchung.hsr.dto.JwtResponse;
 import dev.jbxchung.hsr.dto.LoginRequest;
-import dev.jbxchung.hsr.entity.User;
-import dev.jbxchung.hsr.security.JwtAuthenticationRequest;
 import dev.jbxchung.hsr.security.JwtUtils;
 import dev.jbxchung.hsr.service.UserDetailsImpl;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)

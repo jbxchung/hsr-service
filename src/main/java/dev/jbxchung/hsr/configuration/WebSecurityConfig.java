@@ -59,18 +59,31 @@ public class WebSecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         // TODO - get from config?
-        List<String> ALLOWED_ORIGINS = Arrays.asList("http://localhost:8080",
+        List<String> ALLOWED_ORIGINS = Arrays.asList(
+                "http://localhost:8080",
                 "http://localhost:3000",
                 "https://hsr.uat.jbxchung.dev",
                 "https://hsr.jbxchung.dev"
         );
+        List<String> CORS_HEADERS = Arrays.asList(
+                "Access-Control-Allow-Headers",
+                "Access-Control-Allow-Origin",
+                "Access-Control-Request-Headers",
+                "Access-Control-Request-Method",
+                "Authorization",
+                "Cache-Control",
+                "Content-Type",
+                "Origin"
+        );
 
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowCredentials(true);
         configuration.setAllowedOrigins(ALLOWED_ORIGINS);
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "OPTIONS"));
+        configuration.setAllowedHeaders(CORS_HEADERS);
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
+
         return source;
     }
 
@@ -82,8 +95,7 @@ public class WebSecurityConfig {
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers(HttpMethod.OPTIONS, "/auth/**").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
+                        auth.requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
 //                                .requestMatchers("/api/test/**").permitAll()
                                 .anyRequest().authenticated()
                 );
