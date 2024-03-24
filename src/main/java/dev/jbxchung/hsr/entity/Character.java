@@ -2,6 +2,7 @@ package dev.jbxchung.hsr.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -17,12 +18,11 @@ public class Character implements Serializable {
     private static final long serialVersionUID = 1372317909086804393L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     @JsonProperty("id")
-    private Long id;
+    private String id;
 
-    @Column(name = "name", unique = true)
+    @Column(name = "name")
     @JsonProperty("name")
     private String name;
 
@@ -48,7 +48,6 @@ public class Character implements Serializable {
     @JsonIgnore
     private String thumbnailFilePath;
 
-    @Getter
     public enum Path {
         ABUNDANCE("Abundance"),
         DESTRUCTION("Destruction"),
@@ -60,9 +59,12 @@ public class Character implements Serializable {
 
         private final String value;
         Path(String value) { this.value = value; }
+        @JsonValue
+        public String getValue() {
+            return value;
+        }
     }
 
-    @Getter
     public enum Element {
         FIRE("Fire"),
         ICE("Ice"),
@@ -74,5 +76,9 @@ public class Character implements Serializable {
 
         private final String value;
         Element(String value) { this.value = value; }
+        @JsonValue
+        public String getValue() {
+            return value;
+        }
     }
 }

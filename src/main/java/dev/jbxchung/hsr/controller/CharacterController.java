@@ -41,6 +41,9 @@ public class CharacterController {
     public ResponseEntity<?> saveCharacter(@ModelAttribute CharacterCreationRequest newCharacterRequest) {
         // todo - implement builder pattern
         Character newCharacter = new Character();
+        newCharacter.setId(newCharacterRequest.getId());
+
+        // todo - save thumbnail at configured path
 
         return ResponseEntity.ok("not implemented");
     }

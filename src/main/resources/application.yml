@@ -10,3 +10,5 @@ hsr:
       expiration: 86400000
       secret:
         file: /opt/hsr/jwtsecret
+  resource:
+    path: /opt/hsr/resources
