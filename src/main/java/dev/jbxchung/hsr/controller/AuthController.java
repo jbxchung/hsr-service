@@ -3,7 +3,6 @@ package dev.jbxchung.hsr.controller;
 import dev.jbxchung.hsr.dto.ApiResponse;
 import dev.jbxchung.hsr.dto.JwtResponse;
 import dev.jbxchung.hsr.dto.LoginRequest;
-import dev.jbxchung.hsr.dto.UserInfoRequest;
 import dev.jbxchung.hsr.security.JwtUtils;
 import dev.jbxchung.hsr.service.UserDetailsImpl;
 import jakarta.validation.Valid;
