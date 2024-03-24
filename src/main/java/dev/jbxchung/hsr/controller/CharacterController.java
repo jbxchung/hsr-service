@@ -35,7 +35,7 @@ public class CharacterController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/")
+    @PostMapping({"", "/"})
     public ResponseEntity<?> saveCharacter(@RequestBody Character character) {
         return ResponseEntity.ok("not implemented");
     }
