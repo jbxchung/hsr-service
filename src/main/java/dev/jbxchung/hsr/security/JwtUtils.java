@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.Key;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 @Component
@@ -47,10 +49,13 @@ public class JwtUtils {
     public String generateJwtToken(Authentication authentication) {
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
 
+        Instant issuedAt = Instant.now().truncatedTo(ChronoUnit.SECONDS);
+        Instant expiration = issuedAt.plus(jwtExpirationMs, ChronoUnit.MILLIS);
+
         return Jwts.builder()
                 .subject(userPrincipal.getUsername())
-                .issuedAt(new Date())
-                .expiration(new Date((new Date()).getTime() + jwtExpirationMs))
+                .issuedAt(Date.from(issuedAt))
+                .expiration(Date.from(expiration))
                 .signWith(key())
                 .compact();
     }

@@ -3,9 +3,12 @@ package dev.jbxchung.hsr.controller;
 import dev.jbxchung.hsr.dto.ApiResponse;
 import dev.jbxchung.hsr.dto.JwtResponse;
 import dev.jbxchung.hsr.dto.LoginRequest;
+import dev.jbxchung.hsr.dto.UserInfoRequest;
 import dev.jbxchung.hsr.security.JwtUtils;
 import dev.jbxchung.hsr.service.UserDetailsImpl;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +27,8 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AuthController {
+    Logger logger = LoggerFactory.getLogger(AuthController.class);
+
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -49,7 +54,8 @@ public class AuthController {
                 roles.get(0)
         );
 
+        logger.info("User logged in: {}", loginRequest.getUsername());
+
         return ResponseEntity.ok(new ApiResponse<>(true, jwtResponse));
     }
-
 }
