@@ -33,4 +33,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         return UserDetailsImpl.build(user);
     }
+
+    public User addNewUser(User user) {
+        // todo - handle error cases (e.g. user already exists)
+        return userRepository.save(user);
+    }
 }
