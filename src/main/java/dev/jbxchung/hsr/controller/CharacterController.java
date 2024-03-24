@@ -1,11 +1,13 @@
 package dev.jbxchung.hsr.controller;
 
 import dev.jbxchung.hsr.dto.ApiResponse;
+import dev.jbxchung.hsr.dto.CharacterCreationRequest;
 import dev.jbxchung.hsr.entity.Character;
 import dev.jbxchung.hsr.service.CharacterService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
@@ -17,7 +19,6 @@ public class CharacterController {
 
     @Autowired
     private CharacterService characterService;
-//.requestMatchers("/character/**").hasRole("ADMIN")
 
     @GetMapping("/all")
     public ResponseEntity<?> getAllCharacters() {
@@ -35,8 +36,12 @@ public class CharacterController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping({"", "/"})
-    public ResponseEntity<?> saveCharacter(@RequestBody Character character) {
+    @PostMapping(value = {"", "/"}, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> saveCharacter(@ModelAttribute CharacterCreationRequest newCharacterRequest) {
+        // todo - implement builder pattern
+        Character newCharacter = new Character();
+
         return ResponseEntity.ok("not implemented");
     }
 
