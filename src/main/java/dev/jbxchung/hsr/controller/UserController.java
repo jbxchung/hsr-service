@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -26,6 +27,14 @@ public class UserController {
     public ResponseEntity getAccountInfo(HttpServletRequest request) {
         // TODO - implement this
         return ResponseEntity.ok("ok");
+    }
+
+    @GetMapping("/all")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getAllUsers() {
+        List<User> users = userDetailsService.getAllUsers();
+
+        return ResponseEntity.ok(new ApiResponse<>(true, users));
     }
 
     @PostMapping({"", "/"})

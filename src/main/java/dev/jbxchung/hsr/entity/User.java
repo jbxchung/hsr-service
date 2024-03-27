@@ -31,7 +31,7 @@ public class User implements Serializable {
     private Date created;
 
     @Column(name = "account_name")
-    @JsonProperty("accountName")
+    @JsonProperty("username")
     private String accountName;
 
     @Column(name = "email_address", unique = true)
@@ -40,6 +40,7 @@ public class User implements Serializable {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "user_role", length = 20)
+    @JsonProperty("role")
     private Role role;
 
     @Column(name = "password_enc")
