@@ -42,10 +42,26 @@ public class CharacterController {
         // todo - implement builder pattern
         Character newCharacter = new Character();
         newCharacter.setId(newCharacterRequest.getId());
+        newCharacter.setName(newCharacterRequest.getName());
+        newCharacter.setRarity(newCharacterRequest.getRarity());
+        newCharacter.setPath(newCharacterRequest.getPath());
+        newCharacter.setElement(newCharacterRequest.getElement());
+        newCharacter.setDescription(newCharacterRequest.getDescription());
 
-        // todo - save thumbnail at configured path
+        // todo - handle null thumbnail
+        String thumbnailPath = "";
+        // save thumbnail at configured path
+        try {
+            thumbnailPath = characterService.saveThumbnail(newCharacterRequest.getThumbnail());
+        } catch (Exception e) {
+            // todo - handle failed to save thumbnail
+        }
 
-        return ResponseEntity.ok("not implemented");
+        newCharacter.setThumbnailFilePath(thumbnailPath);
+        Character savedCharacter = characterService.save(newCharacter);
+
+        ApiResponse<?> response = new ApiResponse<>(true, savedCharacter);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/thumbnail")
