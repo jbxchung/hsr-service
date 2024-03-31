@@ -34,7 +34,7 @@ public class DbConfig {
 
         String dbPass = null;
         try {
-            dbPass = Files.readString(Paths.get(dbPwFile));
+            dbPass = Files.readString(Paths.get(dbPwFile)).trim();
             logger.info("INSECURE DEBUG ONLY - dburl: {}, dbpwfile: {}, dbpw: {}", dbUrl, dbPwFile, dbPass);
         } catch (IOException e) {
             logger.error("Failed to get db pw from configured file path: {}", dbPwFile, e);
