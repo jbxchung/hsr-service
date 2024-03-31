@@ -40,8 +40,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    public User addNewUser(User user) {
-        // todo - handle error cases (e.g. user already exists)
+    public User getUser(String username) {
+        return userRepository.findByAccountName(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with account name " + username));
+    }
+
+    public User saveUser(User user) {
+        // todo - handle error cases
         return userRepository.save(user);
     }
 

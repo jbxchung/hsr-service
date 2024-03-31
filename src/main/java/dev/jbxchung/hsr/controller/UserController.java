@@ -49,8 +49,27 @@ public class UserController {
         newUser.setCreated(new Date());
         newUser.setRole(newUserRequest.getRole() != null ? newUserRequest.getRole() : User.Role.USER);
 
-        User savedUser = userDetailsService.addNewUser(newUser);
+        User savedUser = userDetailsService.saveUser(newUser);
 
+        return ResponseEntity.ok(new ApiResponse<>(true, savedUser));
+    }
+
+    @PutMapping("/{username}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> updateUser(@PathVariable String username, @RequestBody UserCreationRequest newUserRequest) {
+        User user = userDetailsService.getUser(username);
+
+        if (newUserRequest.getUsername() != null) {
+            user.setAccountName(newUserRequest.getUsername());
+        }
+        if (newUserRequest.getRole() != null) {
+            user.setRole(newUserRequest.getRole());
+        }
+        if (newUserRequest.getEmail() != null) {
+            user.setEmail(newUserRequest.getEmail());
+        }
+
+        User savedUser = userDetailsService.saveUser(user);
         return ResponseEntity.ok(new ApiResponse<>(true, savedUser));
     }
 
