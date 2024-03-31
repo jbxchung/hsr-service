@@ -1,12 +1,10 @@
 package dev.jbxchung.hsr.configuration;
 
-import dev.jbxchung.hsr.util.HostUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.*;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -27,9 +25,6 @@ public class DbConfig {
     @Value("${hsr.db.pw.file:}")
     private String dbPwFile;
 
-    @Value("${hsr.db.pw.override:}")
-    private String dbPass;
-
     @Bean()
     public DataSource getDataSource() {
         DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
@@ -37,13 +32,12 @@ public class DbConfig {
         dataSourceBuilder.url(dbUrl);
         dataSourceBuilder.username(dbUser);
 
-        // local should override db pw, otherwise get from file
-        if (!HostUtils.isLocalhost()) {
-            try {
-                dbPass = Files.readString(Paths.get(dbPwFile));
-            } catch (IOException e) {
-                logger.error("Failed to get db pw from configured file path: {}", dbPwFile, e);
-            }
+        String dbPass = null;
+        try {
+            // need to trim because in docker jvm this ends in a newline
+            dbPass = Files.readString(Paths.get(dbPwFile)).trim();
+        } catch (IOException e) {
+            logger.error("Failed to get db pw from configured file path: {}", dbPwFile, e);
         }
         dataSourceBuilder.password(dbPass);
 
