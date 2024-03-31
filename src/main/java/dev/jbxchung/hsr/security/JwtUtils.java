@@ -28,7 +28,6 @@ public class JwtUtils {
     @Value("${hsr.auth.jwt.secret.file:}")
     private String jwtSecretFile;
 
-    @Value("${hsr.auth.jwt.secret.override:}")
     private String jwtSecret;
 
     @Value("${hsr.auth.jwt.expiration}")
@@ -36,13 +35,11 @@ public class JwtUtils {
 
     @PostConstruct
     public void init() {
-        // local should override jwt secret, otherwise get from file
-        if (!HostUtils.isLocalhost()) {
-            try {
-                jwtSecret = Files.readString(Paths.get(jwtSecretFile));
-            } catch (IOException e) {
-                logger.error("Failed to get jwt secret from configured file path: {}", jwtSecretFile, e);
-            }
+        try {
+            jwtSecret = Files.readString(Paths.get(jwtSecretFile));
+        } catch (IOException e) {
+            logger.error("Failed to get jwt secret from configured file path: {}", jwtSecretFile, e);
+            throw new RuntimeException("No jwt secret found");
         }
     }
 
