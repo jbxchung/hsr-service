@@ -44,4 +44,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         // todo - handle error cases (e.g. user already exists)
         return userRepository.save(user);
     }
+
+    public User deleteUser(String username) {
+        // todo - handle error cases
+        User user = userRepository.findByAccountName(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with account name " + username));
+
+        // todo - make sure any lazy fields are instantiated before deletion so this can be returned
+        userRepository.delete(user);
+
+        return user;
+    }
 }
