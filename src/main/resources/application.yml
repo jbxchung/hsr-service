@@ -4,11 +4,11 @@ server:
 hsr:
   db:
     pw:
-      file: /opt/hsr/dbpw
+      file: /opt/hsr/vol/dbpw
   auth:
     jwt:
       expiration: 86400000
       secret:
-        file: /opt/hsr/jwtsecret
+        file: /opt/hsr/vol/jwtsecret
   resource:
-    path: /opt/hsr/resources
+    path: /opt/hsr/vol/resources
