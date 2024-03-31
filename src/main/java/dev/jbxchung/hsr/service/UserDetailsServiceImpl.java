@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     Logger logger = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
@@ -32,5 +34,30 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email address " + emailAddress));
 
         return UserDetailsImpl.build(user);
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public User getUser(String username) {
+        return userRepository.findByAccountName(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with account name " + username));
+    }
+
+    public User saveUser(User user) {
+        // todo - handle error cases
+        return userRepository.save(user);
+    }
+
+    public User deleteUser(String username) {
+        // todo - handle error cases
+        User user = userRepository.findByAccountName(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with account name " + username));
+
+        // todo - make sure any lazy fields are instantiated before deletion so this can be returned
+        userRepository.delete(user);
+
+        return user;
     }
 }
