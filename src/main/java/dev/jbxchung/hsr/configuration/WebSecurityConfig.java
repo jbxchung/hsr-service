@@ -60,8 +60,8 @@ public class WebSecurityConfig {
     CorsConfigurationSource corsConfigurationSource() {
         // TODO - get from config?
         List<String> ALLOWED_ORIGINS = Arrays.asList(
-                "http://localhost:8080",
                 "http://localhost:3000",
+                "http://localhost:17715",
                 "https://hsr.uat.jbxchung.dev",
                 "https://hsr.jbxchung.dev"
         );
