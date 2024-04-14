@@ -74,11 +74,15 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public String saveThumbnail(MultipartFile thumbnail) throws IOException {
-        String destinationFilePath = resourcePath + "/characters/" + thumbnail.getOriginalFilename();
-        thumbnail.transferTo(Path.of(destinationFilePath));
+        String destinationFileLocation = resourcePath + "/characters/" + thumbnail.getOriginalFilename();
+
+        Path destinationFilePath = Path.of(destinationFileLocation);
+        Files.createDirectories(destinationFilePath.getParent());
+
+        thumbnail.transferTo(destinationFilePath);
         logger.info("Saved character thumbnail to {}", destinationFilePath);
 
-        return destinationFilePath;
+        return destinationFileLocation;
     }
 
     @Override
