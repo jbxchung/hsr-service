@@ -1,9 +1,6 @@
 package dev.jbxchung.hsr.controller;
 
 import dev.jbxchung.hsr.dto.ApiResponse;
-import dev.jbxchung.hsr.dto.CharacterCreationRequest;
-import dev.jbxchung.hsr.dto.GachaEntityCreationRequest;
-import dev.jbxchung.hsr.entity.Character;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -28,5 +25,5 @@ public interface GachaEntityController<T, DTO> {
 
     @PostMapping(value = {"", "/"}, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     @PreAuthorize("hasRole('ADMIN')")
-    ResponseEntity<?> save(@ModelAttribute DTO newGachaEntityRequest);
+    ResponseEntity<?> save(@ModelAttribute DTO dto);
 }

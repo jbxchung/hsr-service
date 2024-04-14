@@ -1,9 +1,7 @@
 package dev.jbxchung.hsr.controller;
 
 import dev.jbxchung.hsr.dto.ApiResponse;
-import dev.jbxchung.hsr.dto.GachaEntityCreationRequest;
 import dev.jbxchung.hsr.dto.LightConeCreationRequest;
-import dev.jbxchung.hsr.entity.Character;
 import dev.jbxchung.hsr.entity.LightCone;
 import dev.jbxchung.hsr.service.LightConeService;
 import org.slf4j.Logger;

@@ -1,9 +1,7 @@
 package dev.jbxchung.hsr.service;
 
-import dev.jbxchung.hsr.entity.Character;
 import dev.jbxchung.hsr.entity.GachaEntity;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.web.multipart.MultipartFile;
 

@@ -18,31 +18,31 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/character")
-public class CharacterController {
+public class CharacterController implements GachaEntityController<Character, CharacterCreationRequest> {
     Logger logger = LoggerFactory.getLogger(CharacterController.class);
 
     @Autowired
     private CharacterService characterService;
 
-    @GetMapping("/all")
-    public ResponseEntity<?> getAllCharacters() {
+    @Override
+    public ResponseEntity<ApiResponse<List<Character>>> getAll() {
         List<Character> characters = characterService.getAll();
 
-        ApiResponse<?> response = new ApiResponse<>(true, characters);
+        ApiResponse<List<Character>> response = new ApiResponse<>(true, characters);
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/{name}")
-    public ResponseEntity<?> getCharacter(@PathVariable String name) {
-        Character character = characterService.get(name);
+    @Override
+    public ResponseEntity<ApiResponse<Character>> get(String id) {
+        Character character = characterService.getById(id);
 
-        ApiResponse<?> response = new ApiResponse<>(true, character);
+        ApiResponse<Character> response = new ApiResponse<>(true, character);
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/{name}/thumbnail")
-    public ResponseEntity<?> getThumbnail(@PathVariable String name) throws IOException {
-        InputStreamResource thumbnail = characterService.getThumbnail(name);
+    @Override
+    public ResponseEntity<InputStreamResource> getThumbnail(@PathVariable String id) throws IOException {
+        InputStreamResource thumbnail = characterService.getThumbnail(id);
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType("image/webp"))
                 .body(thumbnail);
@@ -50,7 +50,7 @@ public class CharacterController {
 
     @PostMapping(value = {"", "/"}, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> saveCharacter(@ModelAttribute CharacterCreationRequest newCharacterRequest) {
+    public ResponseEntity<?> save(@ModelAttribute CharacterCreationRequest newCharacterRequest) {
         Character newCharacter = Character.builder()
                 .id(newCharacterRequest.getId())
                 .name(newCharacterRequest.getName())
