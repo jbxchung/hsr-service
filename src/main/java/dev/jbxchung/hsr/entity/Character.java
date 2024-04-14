@@ -3,14 +3,17 @@ package dev.jbxchung.hsr.entity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.io.Serial;
 
 @Entity(name = "characters")
 @Table(name = "characters")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 public class Character extends GachaEntity {
     @Serial

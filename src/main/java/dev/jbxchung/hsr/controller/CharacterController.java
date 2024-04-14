@@ -51,17 +51,17 @@ public class CharacterController {
     @PostMapping(value = {"", "/"}, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> saveCharacter(@ModelAttribute CharacterCreationRequest newCharacterRequest) {
-        // todo - implement builder pattern
-        Character newCharacter = new Character();
-        newCharacter.setId(newCharacterRequest.getId());
-        newCharacter.setName(newCharacterRequest.getName());
-        newCharacter.setRarity(newCharacterRequest.getRarity());
-        newCharacter.setPath(newCharacterRequest.getPath());
-        newCharacter.setElement(newCharacterRequest.getElement());
-        newCharacter.setDescription(newCharacterRequest.getDescription());
+        Character newCharacter = Character.builder()
+                .id(newCharacterRequest.getId())
+                .name(newCharacterRequest.getName())
+                .rarity(newCharacterRequest.getRarity())
+                .path(newCharacterRequest.getPath())
+                .element(newCharacterRequest.getElement())
+                .description(newCharacterRequest.getDescription())
+                .build();
 
         // todo - handle null thumbnail
-        String thumbnailPath = "";
+        String thumbnailPath;
         // save thumbnail at configured path
         try {
             thumbnailPath = characterService.saveThumbnail(newCharacterRequest.getThumbnail());
