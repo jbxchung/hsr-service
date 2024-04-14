@@ -1,7 +1,7 @@
 package dev.jbxchung.hsr.controller;
 
 import dev.jbxchung.hsr.dto.ApiResponse;
-import dev.jbxchung.hsr.dto.CharacterCreationRequest;
+import dev.jbxchung.hsr.dto.CharacterDTO;
 import dev.jbxchung.hsr.entity.Character;
 import dev.jbxchung.hsr.service.CharacterService;
 import org.slf4j.Logger;
@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/character")
-public class CharacterController implements GachaEntityController<Character, CharacterCreationRequest> {
+public class CharacterController implements GachaEntityController<Character, CharacterDTO> {
     Logger logger = LoggerFactory.getLogger(CharacterController.class);
 
     @Autowired
@@ -50,21 +50,21 @@ public class CharacterController implements GachaEntityController<Character, Cha
 
     @PostMapping(value = {"", "/"}, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> save(@ModelAttribute CharacterCreationRequest newCharacterRequest) {
+    public ResponseEntity<?> save(@ModelAttribute CharacterDTO characterDTO) {
         Character newCharacter = Character.builder()
-                .id(newCharacterRequest.getId())
-                .name(newCharacterRequest.getName())
-                .rarity(newCharacterRequest.getRarity())
-                .path(newCharacterRequest.getPath())
-                .element(newCharacterRequest.getElement())
-                .description(newCharacterRequest.getDescription())
+                .id(characterDTO.getId())
+                .name(characterDTO.getName())
+                .rarity(characterDTO.getRarity())
+                .path(characterDTO.getPath())
+                .element(characterDTO.getElement())
+                .description(characterDTO.getDescription())
                 .build();
 
         // todo - handle null thumbnail
         String thumbnailPath;
         // save thumbnail at configured path
         try {
-            thumbnailPath = characterService.saveThumbnail(newCharacterRequest.getThumbnail());
+            thumbnailPath = characterService.saveThumbnail(characterDTO.getThumbnail());
         } catch (Exception e) {
             logger.error("Failed to save thumbnail", e);
             return ResponseEntity.internalServerError().body("Failed to save thumbnail");

@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 @Getter
 @Setter
-public abstract class GachaEntityCreationRequest {
+public abstract class GachaEntityDTO {
     private String id;
     private String name;
     private Integer rarity;

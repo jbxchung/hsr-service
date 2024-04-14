@@ -1,7 +1,7 @@
 package dev.jbxchung.hsr.controller;
 
 import dev.jbxchung.hsr.dto.ApiResponse;
-import dev.jbxchung.hsr.dto.LightConeCreationRequest;
+import dev.jbxchung.hsr.dto.LightConeDTO;
 import dev.jbxchung.hsr.entity.LightCone;
 import dev.jbxchung.hsr.service.LightConeService;
 import org.slf4j.Logger;
@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/lightcone")
-public class LightConeController implements GachaEntityController<LightCone, LightConeCreationRequest> {
+public class LightConeController implements GachaEntityController<LightCone, LightConeDTO> {
     Logger logger = LoggerFactory.getLogger(LightConeController.class);
     @Autowired
     LightConeService lightConeService;
@@ -48,20 +48,20 @@ public class LightConeController implements GachaEntityController<LightCone, Lig
     }
 
     @Override
-    public ResponseEntity<?> save(LightConeCreationRequest lcCreationRequest) {
+    public ResponseEntity<?> save(LightConeDTO lightConeDTO) {
         LightCone newLightCone = LightCone.builder()
-                .id(lcCreationRequest.getId())
-                .name(lcCreationRequest.getName())
-                .rarity(lcCreationRequest.getRarity())
-                .path(lcCreationRequest.getPath())
-                .description(lcCreationRequest.getDescription())
+                .id(lightConeDTO.getId())
+                .name(lightConeDTO.getName())
+                .rarity(lightConeDTO.getRarity())
+                .path(lightConeDTO.getPath())
+                .description(lightConeDTO.getDescription())
                 .build();
 
         // todo - handle null thumbnail
         String thumbnailPath;
         // save thumbnail at configured path
         try {
-            thumbnailPath = lightConeService.saveThumbnail(lcCreationRequest.getThumbnail());
+            thumbnailPath = lightConeService.saveThumbnail(lightConeDTO.getThumbnail());
         } catch (Exception e) {
             logger.error("Failed to save thumbnail", e);
             return ResponseEntity.internalServerError().body("Failed to save thumbnail");

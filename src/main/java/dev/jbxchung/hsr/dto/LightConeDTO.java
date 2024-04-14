@@ -7,5 +7,5 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class LightConeCreationRequest extends GachaEntityCreationRequest {
+public class LightConeDTO extends GachaEntityDTO {
 }
