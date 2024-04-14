@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface CharacterRepository extends JpaRepository<Character, Long> {
+public interface CharacterRepository extends JpaRepository<Character, String> {
     Optional<Character> findByName(String characterName);
 }

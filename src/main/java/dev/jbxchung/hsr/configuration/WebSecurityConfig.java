@@ -99,6 +99,7 @@ public class WebSecurityConfig {
                                 .requestMatchers("/error/**").permitAll()
                                 .requestMatchers("/actuator/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/character/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/lightcone/**").permitAll()
 //                                .requestMatchers("/api/test/**").permitAll()
                                 .anyRequest().authenticated()
                 );
