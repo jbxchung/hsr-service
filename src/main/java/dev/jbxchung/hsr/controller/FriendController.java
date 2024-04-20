@@ -28,9 +28,7 @@ public class FriendController {
         User caller = userDetailsService.getUser(callerUsername);
         List<Friendship> friends = friendService.getFriends(caller);
 
-        List<FriendshipDTO> responseBody = friends.stream().map(f -> new FriendshipDTO(callerUsername,
-                userDetailsService.getUser(f.getKey().getReceiver()).getAccountName(),
-                f.getStatus())).toList();
+        List<FriendshipDTO> responseBody = friends.stream().map(friendService::getDTO).toList();
 
         return ResponseEntity.ok(new ApiResponse<>(true, responseBody));
     }
