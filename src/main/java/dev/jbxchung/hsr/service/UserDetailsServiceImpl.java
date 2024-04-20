@@ -45,6 +45,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with account name " + username));
     }
 
+    public User getUser(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with id " + userId));
+    }
+
     public User saveUser(User user) {
         // todo - handle error cases
         return userRepository.save(user);

@@ -1,8 +1,11 @@
 package dev.jbxchung.hsr.controller;
 
 import dev.jbxchung.hsr.dto.ApiResponse;
+import dev.jbxchung.hsr.dto.FriendshipDTO;
 import dev.jbxchung.hsr.dto.UserCreationRequest;
+import dev.jbxchung.hsr.entity.Friendship;
 import dev.jbxchung.hsr.entity.User;
+import dev.jbxchung.hsr.service.FriendService;
 import dev.jbxchung.hsr.service.UserDetailsServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +26,46 @@ public class UserController {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
+    @Autowired
+    private FriendService friendService;
+
     @GetMapping("/info")
     public ResponseEntity<?> getAccountInfo(HttpServletRequest request) {
         String caller = request.getRemoteUser();
         User user = userDetailsService.getUser(caller);
 
         return ResponseEntity.ok(new ApiResponse<>(true, user));
+    }
+
+    @GetMapping("/friends")
+    public ResponseEntity<?> getFriends(HttpServletRequest request) {
+        String callerUsername = request.getRemoteUser();
+        User caller = userDetailsService.getUser(callerUsername);
+        List<Friendship> friends = friendService.getFriends(caller);
+
+        List<FriendshipDTO> responseBody = friends.stream().map(f -> new FriendshipDTO(callerUsername,
+                userDetailsService.getUser(f.getKey().getReceiver()).getAccountName(),
+                f.getStatus())).toList();
+
+        return ResponseEntity.ok(new ApiResponse<>(true, responseBody));
+    }
+
+    @PostMapping("/friends/request/{targetUser}")
+    public ResponseEntity<?> requestFriend(@PathVariable String targetUser, HttpServletRequest request) {
+        String caller = request.getRemoteUser();
+
+        User requester = userDetailsService.getUser(caller);
+        // todo - handle user not found
+        User receiver = userDetailsService.getUser(targetUser);
+
+        Friendship friendRequest = friendService.request(requester, receiver);
+        FriendshipDTO friendshipDTO = FriendshipDTO.builder()
+                .sender(requester.getAccountName())
+                .receiver(receiver.getAccountName())
+                .status(friendRequest.getStatus())
+                .build();
+
+        return ResponseEntity.ok(new ApiResponse<>(true, friendshipDTO));
     }
 
     @GetMapping("/all")
