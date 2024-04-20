@@ -24,9 +24,11 @@ public class UserController {
     private UserDetailsServiceImpl userDetailsService;
 
     @GetMapping("/info")
-    public ResponseEntity getAccountInfo(HttpServletRequest request) {
-        // TODO - implement this
-        return ResponseEntity.ok("ok");
+    public ResponseEntity<?> getAccountInfo(HttpServletRequest request) {
+        String caller = request.getRemoteUser();
+        User user = userDetailsService.getUser(caller);
+
+        return ResponseEntity.ok(new ApiResponse<>(true, user));
     }
 
     @GetMapping("/all")
