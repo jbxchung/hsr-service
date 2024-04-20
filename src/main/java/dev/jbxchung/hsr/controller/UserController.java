@@ -59,11 +59,20 @@ public class UserController {
         User receiver = userDetailsService.getUser(targetUser);
 
         Friendship friendRequest = friendService.request(requester, receiver);
-        FriendshipDTO friendshipDTO = FriendshipDTO.builder()
-                .sender(requester.getAccountName())
-                .receiver(receiver.getAccountName())
-                .status(friendRequest.getStatus())
-                .build();
+        FriendshipDTO friendshipDTO = friendService.getDTO(friendRequest);
+
+        return ResponseEntity.ok(new ApiResponse<>(true, friendshipDTO));
+    }
+
+    @PostMapping("/friends/accept/{sender}")
+    public ResponseEntity<?> acceptFriend(@PathVariable String sender, HttpServletRequest request) {
+        String caller = request.getRemoteUser();
+
+        User receiver = userDetailsService.getUser(caller);
+        User requester = userDetailsService.getUser(sender);
+
+        Friendship friendAccept = friendService.accept(requester, receiver);
+        FriendshipDTO friendshipDTO = friendService.getDTO(friendAccept);
 
         return ResponseEntity.ok(new ApiResponse<>(true, friendshipDTO));
     }
