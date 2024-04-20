@@ -37,46 +37,6 @@ public class UserController {
         return ResponseEntity.ok(new ApiResponse<>(true, user));
     }
 
-    @GetMapping("/friends")
-    public ResponseEntity<?> getFriends(HttpServletRequest request) {
-        String callerUsername = request.getRemoteUser();
-        User caller = userDetailsService.getUser(callerUsername);
-        List<Friendship> friends = friendService.getFriends(caller);
-
-        List<FriendshipDTO> responseBody = friends.stream().map(f -> new FriendshipDTO(callerUsername,
-                userDetailsService.getUser(f.getKey().getReceiver()).getAccountName(),
-                f.getStatus())).toList();
-
-        return ResponseEntity.ok(new ApiResponse<>(true, responseBody));
-    }
-
-    @PostMapping("/friends/request/{targetUser}")
-    public ResponseEntity<?> requestFriend(@PathVariable String targetUser, HttpServletRequest request) {
-        String caller = request.getRemoteUser();
-
-        User requester = userDetailsService.getUser(caller);
-        // todo - handle user not found
-        User receiver = userDetailsService.getUser(targetUser);
-
-        Friendship friendRequest = friendService.request(requester, receiver);
-        FriendshipDTO friendshipDTO = friendService.getDTO(friendRequest);
-
-        return ResponseEntity.ok(new ApiResponse<>(true, friendshipDTO));
-    }
-
-    @PostMapping("/friends/accept/{sender}")
-    public ResponseEntity<?> acceptFriend(@PathVariable String sender, HttpServletRequest request) {
-        String caller = request.getRemoteUser();
-
-        User receiver = userDetailsService.getUser(caller);
-        User requester = userDetailsService.getUser(sender);
-
-        Friendship friendAccept = friendService.accept(requester, receiver);
-        FriendshipDTO friendshipDTO = friendService.getDTO(friendAccept);
-
-        return ResponseEntity.ok(new ApiResponse<>(true, friendshipDTO));
-    }
-
     @GetMapping("/all")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getAllUsers() {
