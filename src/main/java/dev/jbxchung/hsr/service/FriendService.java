@@ -6,6 +6,7 @@ import dev.jbxchung.hsr.entity.User;
 import dev.jbxchung.hsr.repository.FriendRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,11 +52,23 @@ public class FriendService {
     }
 
     public FriendshipDTO getDTO(Friendship friendship) {
-        User sender = userDetailsService.getUser(friendship.getKey().getSender());
-        User receiver = userDetailsService.getUser(friendship.getKey().getReceiver());
+        String sender;
+        try {
+            User senderUser = userDetailsService.getUser(friendship.getKey().getSender());
+            sender = senderUser.getAccountName();
+        } catch (UsernameNotFoundException e) {
+            sender = "[deleted user]";
+        }
+        String receiver;
+        try {
+            User receiverUser = userDetailsService.getUser(friendship.getKey().getReceiver());
+            receiver = receiverUser.getAccountName();
+        } catch (UsernameNotFoundException e) {
+            receiver = "[deleted user]";
+        }
         return new FriendshipDTO(
-                sender.getAccountName(),
-                receiver.getAccountName(),
+                sender,
+                receiver,
                 friendship.getStatus()
         );
     }
