@@ -60,4 +60,18 @@ public class FriendController {
         return ResponseEntity.ok(new ApiResponse<>(true, friendshipDTO));
     }
 
+    @PostMapping("/reject/{sender}")
+    public ResponseEntity<?> rejectFriend(@PathVariable String sender, HttpServletRequest request) {
+        String caller = request.getRemoteUser();
+
+        User receiver = userDetailsService.getUser(caller);
+        User requester = userDetailsService.getUser(sender);
+
+        Friendship friendAccept = friendService.reject(requester, receiver);
+        FriendshipDTO friendshipDTO = friendService.getDTO(friendAccept);
+
+        return ResponseEntity.ok(new ApiResponse<>(true, friendshipDTO));
+    }
+
+
 }

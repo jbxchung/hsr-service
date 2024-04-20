@@ -25,8 +25,9 @@ public class Friendship implements Serializable {
     private FriendStatus status;
 
     public enum FriendStatus {
-        REQUESTED,
-        ACCEPTED
+        ACCEPTED,
+        REJECTED,
+        REQUESTED
     }
 
     @Embeddable
