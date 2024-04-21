@@ -1,6 +1,7 @@
 package dev.jbxchung.hsr.controller;
 
 import dev.jbxchung.hsr.dto.ApiResponse;
+import dev.jbxchung.hsr.dto.FriendRequest;
 import dev.jbxchung.hsr.dto.FriendshipDTO;
 import dev.jbxchung.hsr.entity.Friendship;
 import dev.jbxchung.hsr.entity.User;
@@ -8,7 +9,9 @@ import dev.jbxchung.hsr.service.FriendService;
 import dev.jbxchung.hsr.service.UserDetailsServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,58 +36,72 @@ public class FriendController {
         return ResponseEntity.ok(new ApiResponse<>(true, responseBody));
     }
 
-    @PostMapping("/request/{targetUser}")
-    public ResponseEntity<?> requestFriend(@PathVariable String targetUser, HttpServletRequest request) {
+    @PostMapping("/request")
+    public ResponseEntity<?> requestFriend(@RequestBody FriendRequest friendRequest, HttpServletRequest request) {
         String caller = request.getRemoteUser();
 
-        User requester = userDetailsService.getUser(caller);
-        // todo - handle user not found
-        User receiver = userDetailsService.getUser(targetUser);
+        try {
+            User requester = userDetailsService.getUser(caller);
+            User receiver = userDetailsService.getUser(friendRequest.getUser());
 
-        Friendship friendRequest = friendService.request(requester, receiver);
-        FriendshipDTO friendshipDTO = friendService.getDTO(friendRequest);
+            Friendship sentFriendRequest = friendService.request(requester, receiver);
+            FriendshipDTO friendshipDTO = friendService.getDTO(sentFriendRequest);
 
-        return ResponseEntity.ok(new ApiResponse<>(true, friendshipDTO));
+            return ResponseEntity.ok(new ApiResponse<>(true, friendshipDTO));
+        } catch (UsernameNotFoundException e) {
+            return new ResponseEntity<>(new ApiResponse<>(false, "User not found"), HttpStatus.BAD_REQUEST);
+        }
     }
 
-    @PostMapping("/cancel/{targetUser}")
-    public ResponseEntity<?> cancelFriend(@PathVariable String targetUser, HttpServletRequest request) {
+    @PostMapping("/cancel")
+    public ResponseEntity<?> cancelFriend(@RequestBody FriendRequest friendRequest, HttpServletRequest request) {
         String caller = request.getRemoteUser();
 
-        User requester = userDetailsService.getUser(caller);
-        // todo - handle user not found
-        User receiver = userDetailsService.getUser(targetUser);
+        try {
+            User requester = userDetailsService.getUser(caller);
+            User receiver = userDetailsService.getUser(friendRequest.getUser());
 
-        Friendship cancelFriendRequest = friendService.cancel(requester, receiver);
-        FriendshipDTO friendshipDTO = friendService.getDTO(cancelFriendRequest);
+            Friendship cancelFriendRequest = friendService.cancel(requester, receiver);
+            FriendshipDTO friendshipDTO = friendService.getDTO(cancelFriendRequest);
 
-        return ResponseEntity.ok(new ApiResponse<>(true, friendshipDTO));
+            return ResponseEntity.ok(new ApiResponse<>(true, friendshipDTO));
+        } catch (UsernameNotFoundException e) {
+            return new ResponseEntity<>(new ApiResponse<>(false, "User not found"), HttpStatus.BAD_REQUEST);
+        }
     }
 
-    @PostMapping("/accept/{sender}")
-    public ResponseEntity<?> acceptFriend(@PathVariable String sender, HttpServletRequest request) {
+    @PostMapping("/accept")
+    public ResponseEntity<?> acceptFriend(@RequestBody FriendRequest friendRequest, HttpServletRequest request) {
         String caller = request.getRemoteUser();
 
-        User receiver = userDetailsService.getUser(caller);
-        User requester = userDetailsService.getUser(sender);
+        try {
+            User receiver = userDetailsService.getUser(caller);
+            User requester = userDetailsService.getUser(friendRequest.getUser());
 
-        Friendship friendAccept = friendService.accept(requester, receiver);
-        FriendshipDTO friendshipDTO = friendService.getDTO(friendAccept);
+            Friendship friendAccept = friendService.accept(requester, receiver);
+            FriendshipDTO friendshipDTO = friendService.getDTO(friendAccept);
 
-        return ResponseEntity.ok(new ApiResponse<>(true, friendshipDTO));
+            return ResponseEntity.ok(new ApiResponse<>(true, friendshipDTO));
+        } catch (UsernameNotFoundException e) {
+            return new ResponseEntity<>(new ApiResponse<>(false, "User not found"), HttpStatus.BAD_REQUEST);
+        }
     }
 
-    @PostMapping("/reject/{sender}")
-    public ResponseEntity<?> rejectFriend(@PathVariable String sender, HttpServletRequest request) {
+    @PostMapping("/reject")
+    public ResponseEntity<?> rejectFriend(@RequestBody FriendRequest friendRequest, HttpServletRequest request) {
         String caller = request.getRemoteUser();
 
-        User receiver = userDetailsService.getUser(caller);
-        User requester = userDetailsService.getUser(sender);
+        try {
+            User receiver = userDetailsService.getUser(caller);
+            User requester = userDetailsService.getUser(friendRequest.getUser());
 
-        Friendship friendAccept = friendService.reject(requester, receiver);
-        FriendshipDTO friendshipDTO = friendService.getDTO(friendAccept);
+            Friendship friendAccept = friendService.reject(requester, receiver);
+            FriendshipDTO friendshipDTO = friendService.getDTO(friendAccept);
 
-        return ResponseEntity.ok(new ApiResponse<>(true, friendshipDTO));
+            return ResponseEntity.ok(new ApiResponse<>(true, friendshipDTO));
+        } catch (UsernameNotFoundException e) {
+            return new ResponseEntity<>(new ApiResponse<>(false, "User not found"), HttpStatus.BAD_REQUEST);
+        }
     }
 
 
