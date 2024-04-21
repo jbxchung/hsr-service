@@ -26,6 +26,7 @@ public class Friendship implements Serializable {
 
     public enum FriendStatus {
         ACCEPTED,
+        CANCELLED,
         REJECTED,
         REQUESTED
     }

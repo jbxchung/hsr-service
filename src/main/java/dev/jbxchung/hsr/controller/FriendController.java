@@ -47,6 +47,20 @@ public class FriendController {
         return ResponseEntity.ok(new ApiResponse<>(true, friendshipDTO));
     }
 
+    @PostMapping("/cancel/{targetUser}")
+    public ResponseEntity<?> cancelFriend(@PathVariable String targetUser, HttpServletRequest request) {
+        String caller = request.getRemoteUser();
+
+        User requester = userDetailsService.getUser(caller);
+        // todo - handle user not found
+        User receiver = userDetailsService.getUser(targetUser);
+
+        Friendship cancelFriendRequest = friendService.cancel(requester, receiver);
+        FriendshipDTO friendshipDTO = friendService.getDTO(cancelFriendRequest);
+
+        return ResponseEntity.ok(new ApiResponse<>(true, friendshipDTO));
+    }
+
     @PostMapping("/accept/{sender}")
     public ResponseEntity<?> acceptFriend(@PathVariable String sender, HttpServletRequest request) {
         String caller = request.getRemoteUser();

@@ -32,6 +32,16 @@ public class FriendService {
         return friendRepository.save(friendRequest);
     }
 
+    public Friendship cancel(User sender, User receiver) {
+        Friendship friendRequest = friendRepository.getFriendship(sender.getId(), receiver.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Unable to find friend request from " + sender.getAccountName() + " to " + receiver.getAccountName()));
+
+        friendRepository.delete(friendRequest);
+        friendRequest.setStatus(Friendship.FriendStatus.CANCELLED);
+
+        return friendRequest;
+    }
+
     public Friendship accept(User sender, User receiver) {
         Friendship friendRequest = friendRepository.getFriendship(sender.getId(), receiver.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Unable to find friend request from " + sender.getAccountName() + " to " + receiver.getAccountName()));
