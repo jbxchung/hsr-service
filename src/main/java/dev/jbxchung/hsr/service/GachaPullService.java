@@ -1,7 +1,7 @@
 package dev.jbxchung.hsr.service;
 
-import dev.jbxchung.hsr.dto.GachaPullDTO;
-import dev.jbxchung.hsr.dto.PullRequest;
+import dev.jbxchung.hsr.dto.GachaPullResponse;
+import dev.jbxchung.hsr.dto.GachaPullRequest;
 import dev.jbxchung.hsr.entity.*;
 import dev.jbxchung.hsr.entity.Character;
 import dev.jbxchung.hsr.repository.GachaPullRepository;
@@ -32,13 +32,13 @@ public class GachaPullService {
         return gachaPullRepository.findByUser(user);
     }
 
-    public GachaPull recordPull(User user, PullRequest pullRequest) {
+    public GachaPull recordPull(User user, GachaPullRequest gachaPullRequest) {
         GachaEntity pullResult = null;
-        if (pullRequest.getEntityType() == Character.class) {
-            pullResult = characterService.getById(pullRequest.getEntityId());
+        if (gachaPullRequest.getEntityType() == Character.class) {
+            pullResult = characterService.getById(gachaPullRequest.getEntityId());
         }
-        if (pullRequest.getEntityType() == LightCone.class) {
-            pullResult = lightConeService.getById(pullRequest.getEntityId());
+        if (gachaPullRequest.getEntityType() == LightCone.class) {
+            pullResult = lightConeService.getById(gachaPullRequest.getEntityId());
         }
 
         GachaPull pull = GachaPull.builder()
@@ -50,8 +50,8 @@ public class GachaPullService {
         return gachaPullRepository.save(pull);
     }
 
-    public GachaPullDTO getDTO(GachaPull... pulls) {
-        return GachaPullDTO.builder()
+    public GachaPullResponse getDTO(GachaPull... pulls) {
+        return GachaPullResponse.builder()
                 .username(pulls[0].getUser().getAccountName())
                 .pullResults(Arrays.stream(pulls).toList())
                 .build();

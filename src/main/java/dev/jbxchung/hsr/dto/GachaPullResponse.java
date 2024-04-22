@@ -10,7 +10,7 @@ import java.util.List;
 @Builder
 @Getter
 @Setter
-public class GachaPullDTO {
+public class GachaPullResponse {
     private String username;
     private List<GachaPull> pullResults;
 }

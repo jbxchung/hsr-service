@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class PullRequest {
+public class GachaPullRequest {
     private String entityId;
     @JsonDeserialize(using = EntityClassNameDeserializer.class)
     private Class<? extends GachaEntity> entityType;

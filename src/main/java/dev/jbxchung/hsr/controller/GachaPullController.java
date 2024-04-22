@@ -1,7 +1,7 @@
 package dev.jbxchung.hsr.controller;
 
 import dev.jbxchung.hsr.dto.ApiResponse;
-import dev.jbxchung.hsr.dto.PullRequest;
+import dev.jbxchung.hsr.dto.GachaPullRequest;
 import dev.jbxchung.hsr.entity.*;
 import dev.jbxchung.hsr.service.GachaPullService;
 import dev.jbxchung.hsr.service.UserDetailsServiceImpl;
@@ -40,12 +40,12 @@ public class GachaPullController {
     }
 
     @PostMapping({"", "/"})
-    public ResponseEntity<?> recordPull(@RequestBody PullRequest pullRequest, HttpServletRequest request) {
+    public ResponseEntity<?> recordPull(@RequestBody GachaPullRequest gachaPullRequest, HttpServletRequest request) {
         String callerName = request.getRemoteUser();
 
         try {
             User caller = userDetailsService.getUser(callerName);
-            GachaPull pull = gachaPullService.recordPull(caller, pullRequest);
+            GachaPull pull = gachaPullService.recordPull(caller, gachaPullRequest);
 
             return ResponseEntity.ok(new ApiResponse<>(true, gachaPullService.getDTO(pull)));
         } catch (UsernameNotFoundException e) {
