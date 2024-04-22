@@ -104,5 +104,20 @@ public class FriendController {
         }
     }
 
+    @PostMapping("/delete")
+    public ResponseEntity<?> deleteFriend(@RequestBody FriendRequest friendRequest, HttpServletRequest request) {
+        String caller = request.getRemoteUser();
 
+        try {
+            User receiver = userDetailsService.getUser(caller);
+            User requester = userDetailsService.getUser(friendRequest.getUser());
+
+            Friendship friendDelete = friendService.delete(requester, receiver);
+            FriendshipDTO friendshipDTO = friendService.getDTO(friendDelete);
+
+            return ResponseEntity.ok(new ApiResponse<>(true, friendshipDTO));
+        } catch (UsernameNotFoundException e) {
+            return new ResponseEntity<>(new ApiResponse<>(false, "User not found"), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

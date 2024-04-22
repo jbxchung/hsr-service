@@ -61,6 +61,17 @@ public class FriendService {
         return friendRequest;
     }
 
+    public Friendship delete(User sender, User receiver) {
+        Friendship friendRequest = friendRepository.getFriendship(sender.getId(), receiver.getId())
+                .or(() -> friendRepository.getFriendship(receiver.getId(), sender.getId()))
+                .orElseThrow(() -> new EntityNotFoundException("Unable to find friend request between " + sender.getAccountName() + " and " + receiver.getAccountName()));
+
+        friendRepository.delete(friendRequest);
+        friendRequest.setStatus(Friendship.FriendStatus.DELETED);
+
+        return friendRequest;
+    }
+
     public FriendshipDTO getDTO(Friendship friendship) {
         String sender;
         try {
