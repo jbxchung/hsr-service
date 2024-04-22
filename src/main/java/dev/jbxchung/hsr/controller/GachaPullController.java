@@ -43,15 +43,19 @@ public class GachaPullController {
     public ResponseEntity<?> recordPull(@RequestBody GachaPullRequest gachaPullRequest, HttpServletRequest request) {
         String callerName = request.getRemoteUser();
 
+        if (gachaPullRequest.getEntityType() == null) {
+            return new ResponseEntity<>(new ApiResponse<>(false, "Unknown entity type"), HttpStatus.BAD_REQUEST);
+        }
+
         try {
             User caller = userDetailsService.getUser(callerName);
             GachaPull pull = gachaPullService.recordPull(caller, gachaPullRequest);
 
             return ResponseEntity.ok(new ApiResponse<>(true, gachaPullService.getDTO(pull)));
         } catch (UsernameNotFoundException e) {
-            return new ResponseEntity<>(new ApiResponse<>(false, "User not found"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponse<>(false, "User not found"), HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (EntityNotFoundException e) {
-            return new ResponseEntity<>(new ApiResponse<>(false, "Entity not found"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponse<>(false, "Entity not found"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

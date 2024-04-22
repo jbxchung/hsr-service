@@ -32,11 +32,11 @@ public class GachaPull implements Serializable {
     @JsonProperty("timestamp")
     private Timestamp timestamp;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "gacha_entity_id", referencedColumnName = "id")
     private GachaEntity pullResult;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "user_account_name", referencedColumnName = "account_name")
     @JsonIgnore
     private User user;
