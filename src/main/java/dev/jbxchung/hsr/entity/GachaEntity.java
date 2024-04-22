@@ -16,7 +16,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
-@MappedSuperclass
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class GachaEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = 6836129875474288125L;
