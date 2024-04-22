@@ -1,8 +1,11 @@
 package dev.jbxchung.hsr.controller;
 
 import dev.jbxchung.hsr.dto.ApiResponse;
+import dev.jbxchung.hsr.dto.FriendshipDTO;
 import dev.jbxchung.hsr.dto.UserCreationRequest;
+import dev.jbxchung.hsr.entity.Friendship;
 import dev.jbxchung.hsr.entity.User;
+import dev.jbxchung.hsr.service.FriendService;
 import dev.jbxchung.hsr.service.UserDetailsServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +26,15 @@ public class UserController {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
+    @Autowired
+    private FriendService friendService;
+
     @GetMapping("/info")
-    public ResponseEntity getAccountInfo(HttpServletRequest request) {
-        // TODO - implement this
-        return ResponseEntity.ok("ok");
+    public ResponseEntity<?> getAccountInfo(HttpServletRequest request) {
+        String caller = request.getRemoteUser();
+        User user = userDetailsService.getUser(caller);
+
+        return ResponseEntity.ok(new ApiResponse<>(true, user));
     }
 
     @GetMapping("/all")
