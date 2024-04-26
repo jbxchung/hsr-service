@@ -5,10 +5,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -26,4 +23,8 @@ public interface GachaEntityController<T, DTO> {
     @PostMapping(value = {"", "/"}, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<?> save(@ModelAttribute DTO dto);
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize(("hasRole('ADMIN')"))
+    ResponseEntity<?> delete(@PathVariable String id);
 }

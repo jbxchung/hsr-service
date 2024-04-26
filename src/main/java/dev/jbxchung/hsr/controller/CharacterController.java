@@ -4,10 +4,12 @@ import dev.jbxchung.hsr.dto.ApiResponse;
 import dev.jbxchung.hsr.dto.CharacterDTO;
 import dev.jbxchung.hsr.entity.Character;
 import dev.jbxchung.hsr.service.CharacterService;
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -48,8 +50,7 @@ public class CharacterController implements GachaEntityController<Character, Cha
                 .body(thumbnail);
     }
 
-    @PostMapping(value = {"", "/"}, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-    @PreAuthorize("hasRole('ADMIN')")
+    @Override
     public ResponseEntity<?> save(@ModelAttribute CharacterDTO characterDTO) {
         Character newCharacter = Character.builder()
                 .id(characterDTO.getId())
@@ -75,5 +76,17 @@ public class CharacterController implements GachaEntityController<Character, Cha
 
         ApiResponse<?> response = new ApiResponse<>(true, savedCharacter);
         return ResponseEntity.ok(response);
+    }
+
+    @Override
+    public ResponseEntity<?> delete(String id) {
+        try {
+            Character character = characterService.delete(id);
+
+            ApiResponse<Character> response = new ApiResponse<>(true, character);
+            return ResponseEntity.ok(response);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(new ApiResponse<>(false, e.getMessage()), HttpStatus.NOT_FOUND);
+        }
     }
 }
