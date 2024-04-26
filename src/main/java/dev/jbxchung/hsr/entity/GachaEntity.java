@@ -40,7 +40,7 @@ public abstract class GachaEntity implements Serializable {
     @JsonProperty("path")
     private Path path;
 
-    @Column(name = "description")
+    @Column(name = "description", length = 1023)
     @JsonProperty("description")
     private String description;
 
