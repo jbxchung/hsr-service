@@ -1,6 +1,5 @@
 package dev.jbxchung.hsr.service;
 
-import dev.jbxchung.hsr.dto.GachaPullResponse;
 import dev.jbxchung.hsr.dto.GachaPullRequest;
 import dev.jbxchung.hsr.entity.*;
 import dev.jbxchung.hsr.entity.Character;
@@ -48,12 +47,5 @@ public class GachaPullService {
                 .build();
 
         return gachaPullRepository.save(pull);
-    }
-
-    public GachaPullResponse getDTO(String user, GachaPull... pulls) {
-        return GachaPullResponse.builder()
-                .username(user)
-                .pullResults(Arrays.stream(pulls).toList())
-                .build();
     }
 }
