@@ -2,6 +2,10 @@ package dev.jbxchung.hsr.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import dev.jbxchung.hsr.configuration.EntityClassNameDeserializer;
+import dev.jbxchung.hsr.configuration.EntityClassNameSerializer;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,6 +35,11 @@ public class GachaPull implements Serializable {
     @Column(name = "timestamp")
     @JsonProperty("timestamp")
     private Timestamp timestamp;
+
+    @Column(name = "gacha_entity_type")
+    @JsonSerialize(using = EntityClassNameSerializer.class)
+    @JsonProperty("entityType")
+    private Class<? extends GachaEntity> entityType;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "gacha_entity_id", referencedColumnName = "id")

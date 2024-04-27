@@ -42,6 +42,7 @@ public class GachaPullService {
 
         GachaPull pull = GachaPull.builder()
                 .user(user)
+                .entityType(gachaPullRequest.getEntityType())
                 .pullResult(pullResult)
                 .timestamp(Timestamp.from(Instant.now()))
                 .build();
