@@ -50,9 +50,9 @@ public class GachaPullService {
         return gachaPullRepository.save(pull);
     }
 
-    public GachaPullResponse getDTO(GachaPull... pulls) {
+    public GachaPullResponse getDTO(String user, GachaPull... pulls) {
         return GachaPullResponse.builder()
-                .username(pulls[0].getUser().getAccountName())
+                .username(user)
                 .pullResults(Arrays.stream(pulls).toList())
                 .build();
     }

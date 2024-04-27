@@ -33,7 +33,7 @@ public class GachaPullController {
             User caller = userDetailsService.getUser(callerName);
 
             List<GachaPull> pulls = gachaPullService.getPullHistory(caller);
-            return ResponseEntity.ok(new ApiResponse<>(true, gachaPullService.getDTO(pulls.toArray(new GachaPull[0]))));
+            return ResponseEntity.ok(new ApiResponse<>(true, gachaPullService.getDTO(caller.getAccountName(), pulls.toArray(new GachaPull[0]))));
         } catch (UsernameNotFoundException e) {
             return new ResponseEntity<>(new ApiResponse<>(false, "User not found"), HttpStatus.BAD_REQUEST);
         }
@@ -51,7 +51,7 @@ public class GachaPullController {
             User caller = userDetailsService.getUser(callerName);
             GachaPull pull = gachaPullService.recordPull(caller, gachaPullRequest);
 
-            return ResponseEntity.ok(new ApiResponse<>(true, gachaPullService.getDTO(pull)));
+            return ResponseEntity.ok(new ApiResponse<>(true, gachaPullService.getDTO(caller.getAccountName(), pull)));
         } catch (UsernameNotFoundException e) {
             return new ResponseEntity<>(new ApiResponse<>(false, "User not found"), HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (EntityNotFoundException e) {

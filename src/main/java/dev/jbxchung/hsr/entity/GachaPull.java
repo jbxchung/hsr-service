@@ -34,6 +34,7 @@ public class GachaPull implements Serializable {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "gacha_entity_id", referencedColumnName = "id")
+    @JsonProperty("entity")
     private GachaEntity pullResult;
 
     @ManyToOne(optional = false)
