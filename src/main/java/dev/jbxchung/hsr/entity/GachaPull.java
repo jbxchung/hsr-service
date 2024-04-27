@@ -29,7 +29,7 @@ public class GachaPull implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    @JsonIgnore
+    @JsonProperty("id")
     private Long id;
 
     @Column(name = "timestamp")

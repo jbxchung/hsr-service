@@ -51,7 +51,7 @@ public class GachaPullController {
             User caller = userDetailsService.getUser(callerName);
             GachaPull pull = gachaPullService.recordPull(caller, gachaPullRequest);
 
-            return ResponseEntity.ok(new ApiResponse<>(true, List.of(pull)));
+            return ResponseEntity.ok(new ApiResponse<>(true, pull));
         } catch (UsernameNotFoundException e) {
             return new ResponseEntity<>(new ApiResponse<>(false, "User not found"), HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (EntityNotFoundException e) {
