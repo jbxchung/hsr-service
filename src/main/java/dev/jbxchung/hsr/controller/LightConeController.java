@@ -2,12 +2,15 @@ package dev.jbxchung.hsr.controller;
 
 import dev.jbxchung.hsr.dto.ApiResponse;
 import dev.jbxchung.hsr.dto.LightConeDTO;
+import dev.jbxchung.hsr.entity.Character;
 import dev.jbxchung.hsr.entity.LightCone;
 import dev.jbxchung.hsr.service.LightConeService;
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -72,5 +75,17 @@ public class LightConeController implements GachaEntityController<LightCone, Lig
 
         ApiResponse<?> response = new ApiResponse<>(true, savedLightCone);
         return ResponseEntity.ok(response);
+    }
+
+    @Override
+    public ResponseEntity<?> delete(String id) {
+        try {
+            LightCone lightCone = lightConeService.delete(id);
+
+            ApiResponse<LightCone> response = new ApiResponse<>(true, lightCone);
+            return ResponseEntity.ok(response);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(new ApiResponse<>(false, e.getMessage()), HttpStatus.NOT_FOUND);
+        }
     }
 }

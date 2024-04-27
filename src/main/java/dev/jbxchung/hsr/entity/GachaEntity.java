@@ -16,7 +16,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
-@MappedSuperclass
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class GachaEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = 6836129875474288125L;
@@ -39,7 +40,7 @@ public abstract class GachaEntity implements Serializable {
     @JsonProperty("path")
     private Path path;
 
-    @Column(name = "description")
+    @Column(name = "description", length = 1023)
     @JsonProperty("description")
     private String description;
 
