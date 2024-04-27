@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface GachaPullRepository extends JpaRepository<GachaPull, Long> {
-    List<GachaPull> findByUser(User user);
+    List<GachaPull> findByUserOrderByTimestampDesc(User user);
 }

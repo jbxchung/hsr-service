@@ -28,7 +28,7 @@ public class GachaPullService {
     private CharacterService characterService;
 
     public List<GachaPull> getPullHistory(User user) {
-        return gachaPullRepository.findByUser(user);
+        return gachaPullRepository.findByUserOrderByTimestampDesc(user);
     }
 
     public GachaPull recordPull(User user, GachaPullRequest gachaPullRequest) {
