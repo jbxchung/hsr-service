@@ -1,16 +1,15 @@
 package dev.jbxchung.hsr.controller;
 
 import dev.jbxchung.hsr.dto.ApiResponse;
-import dev.jbxchung.hsr.dto.UserCreationRequest;
 import dev.jbxchung.hsr.entity.Item;
-import dev.jbxchung.hsr.entity.User;
 import dev.jbxchung.hsr.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -46,8 +45,12 @@ public class ItemController {
     @DeleteMapping("/{itemId}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteItem(@PathVariable String itemId) {
-        Item deletedItem = itemService.deleteItem(itemId);
+        try {
+            Item deletedItem = itemService.deleteItem(itemId);
 
-        return ResponseEntity.ok(new ApiResponse<>(true, deletedItem));
+            return ResponseEntity.ok(new ApiResponse<>(true, deletedItem));
+        } catch (DataIntegrityViolationException e) {
+            return new ResponseEntity<>(new ApiResponse<>(false, "Cannot delete an item that is in somebody's inventory"), HttpStatus.BAD_REQUEST);
+        }
     }
 }

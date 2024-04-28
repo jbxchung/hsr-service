@@ -4,6 +4,7 @@ import dev.jbxchung.hsr.entity.Item;
 import dev.jbxchung.hsr.repository.ItemRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class ItemService {
         return itemRepository.save(item);
     }
 
-    public Item deleteItem(String itemId) {
+    public Item deleteItem(String itemId) throws DataIntegrityViolationException {
         Item item = this.getItem(itemId);
 
         itemRepository.delete(item);

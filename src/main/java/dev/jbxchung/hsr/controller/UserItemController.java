@@ -2,7 +2,6 @@ package dev.jbxchung.hsr.controller;
 
 import dev.jbxchung.hsr.dto.ApiResponse;
 import dev.jbxchung.hsr.dto.UserItemDTO;
-import dev.jbxchung.hsr.entity.GachaPull;
 import dev.jbxchung.hsr.entity.Item;
 import dev.jbxchung.hsr.entity.User;
 import dev.jbxchung.hsr.entity.UserItem;
@@ -14,7 +13,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
