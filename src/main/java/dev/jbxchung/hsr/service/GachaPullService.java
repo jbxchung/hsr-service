@@ -4,6 +4,7 @@ import dev.jbxchung.hsr.dto.GachaPullRequest;
 import dev.jbxchung.hsr.entity.*;
 import dev.jbxchung.hsr.entity.Character;
 import dev.jbxchung.hsr.repository.GachaPullRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class GachaPullService {
@@ -47,5 +49,18 @@ public class GachaPullService {
                 .build();
 
         return gachaPullRepository.save(pull);
+    }
+
+    public GachaPull deletePull(User user, Long pullId) {
+        GachaPull pullToDelete = gachaPullRepository.findById(pullId)
+                .orElseThrow(() -> new EntityNotFoundException("Unable to find gacha pull with id " + pullId));;
+
+        if (!Objects.equals(pullToDelete.getUser().getId(), user.getId())) {
+            throw new IllegalArgumentException("Cannot delete a pull of a different user");
+        }
+
+        gachaPullRepository.delete(pullToDelete);
+
+        return pullToDelete;
     }
 }
