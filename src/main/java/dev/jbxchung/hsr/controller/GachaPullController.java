@@ -58,4 +58,22 @@ public class GachaPullController {
             return new ResponseEntity<>(new ApiResponse<>(false, "Entity not found"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @DeleteMapping("/{pullId}")
+    public ResponseEntity<?> deletePull(@PathVariable Long pullId, HttpServletRequest request) {
+        String callerName = request.getRemoteUser();
+
+        try {
+            User caller = userDetailsService.getUser(callerName);
+            GachaPull deletedPull = gachaPullService.deletePull(caller, pullId);
+
+            return ResponseEntity.ok(new ApiResponse<>(true, deletedPull));
+        } catch (UsernameNotFoundException e) {
+            return new ResponseEntity<>(new ApiResponse<>(false, "User not found"), HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(new ApiResponse<>(false, "Entity not found"), HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(new ApiResponse<>(false, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
